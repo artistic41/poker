@@ -2,6 +2,16 @@
 
 require 'autoload.php';
 
-$table = new \Adil\Poker\Table();
+use Adil\Poker\Table;
+use Adil\Poker\Player;
 
-var_dump($table);
+$table = new Table();
+for($i = 1; $i <= 4; $i++){
+    $player = new Player($i);
+    $table->addPlayer($player);
+}
+$table->distributeHand();
+$table->distributeFlop();
+$table->distributeTurn();
+$table->distributeRiver();
+$table->showDown();
