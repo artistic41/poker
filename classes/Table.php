@@ -5,10 +5,16 @@ namespace Adil\Poker;
 class Table{
     private $smallBlind;
     private $bigBlind;
+    private $button;
+
+    private $deck;
     private $players;
+    
     function __construct($smallBlind = 1, $bigBlind = 2){
         $this->smallBlind = $smallBlind;
         $this->bigBlind = $bigBlind;
+        $this->button = 1;
+        $this->deck = new Deck();
     }
     function getSmallBlind(){
         return $this->smallBlind;
@@ -36,22 +42,30 @@ class Table{
             if($value->getId() === $player->getId()) unset($this->players[$key]);
         }
     }
+
+    function moveButton(){
+        $this->button ++;
+    }
+
     function distributeHand(){
         foreach($this->players as $player){
             //distribute hand to each player
         }
     }
+
     function distributeFlop(){
 
     }
+
     function distributeTurn(){
         
     }
+
     function distributeRiver(){
         
     }
 
     function showDown(){
-
+        $this->moveButton();
     }
 }
