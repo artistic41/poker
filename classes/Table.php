@@ -7,8 +7,9 @@ class Table{
     private $bigBlind;
     private $button;
 
-    private $deck;
+    private Deck $deck;
     private $players;
+    private $community;
     
     function __construct($smallBlind = 1, $bigBlind = 2){
         $this->smallBlind = $smallBlind;
@@ -47,9 +48,17 @@ class Table{
         $this->button ++;
     }
 
+    function deckIsEmpty(){
+        return $this->deck->isEmpty();
+    }
+
     function distributeHand(){
         foreach($this->players as $player){
-            //distribute hand to each player
+            //distribute a new hand to each player
+            $card1 = $this->deck->getCard();
+            $card2 = $this->deck->getCard();
+            $hand = new Hand($card1, $card2);
+            $player->setHand($hand);
         }
     }
 

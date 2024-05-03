@@ -18,4 +18,7 @@ class Card{
     function getValue(){
         return $this->value;
     }
+    function showCard(){
+        return ['suit' => $this->suit, 'value' => $this->value];
+    }
 }
