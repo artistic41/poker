@@ -50,7 +50,7 @@ class Table{
             //distribute a new hand to each player
             $card1 = $this->deck->getCard();
             $card2 = $this->deck->getCard();
-            $hand = new Hand($card1, $card2);
+            $hand = new Hand([$card1, $card2]);
             $player->setHand($hand);
         }
     }

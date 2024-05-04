@@ -3,23 +3,30 @@
 namespace Adil\Poker;
 
 class Hand{
-    private $card1;
-    private $card2;
-    function __construct(Card $card1, Card $card2){
-        $this->card1 = $card1;
-        $this->card2 = $card2;
+    private $cards;
+    function __construct($cards){
+        $this->cards = $cards;
     }
     function foldHand(){
 
     }
-    function showHand(){
-        return [$this->card1->showCard(), $this->card2->showCard()];
+    function getCards(){
+        return $this->cards;
     }
-    function getHighCard($communityCards){
-        $allCards = [$this->card1, $this->card2];
-        $allCards = array_merge($allCards, $communityCards);
+    function setCards($cards){
+        $this->cards = $cards;
+    }
+    function showHand(){
+        $json = "{";
+        foreach($this->cards as $card) $json .= "{'suit':'" . $card->getSuit()."','value':'" . $card->getValue() . "'},";
+        //remove the last comma
+        $json = rtrim($json, ",");
+        $json .= "}";
+        return $json;
+    }
+    function getHighCard(){
         $allCardValues = [];
-        foreach($allCards as $card){
+        foreach($this->cards as $card){
             $value = $card->getValue();
             $pos = array_search($value, Deck::$VALUES);
             if(isset($allCardValues[$pos])) $allCardValues[$pos][] = $value;
@@ -29,7 +36,20 @@ class Hand{
         return Deck::$VALUES[$maxKey];
     }
     function evaluate($communityCards){
-        $highCard = $this->getHighCard($communityCards);
-        if($this->isStraightFlush()) return "Straight Flush - High $highCard";
+        $allCards = array_merge($this->cards, $communityCards);
+        $this->setCards($allCards);
+        var_dump($this->showHand()); 
+        if($this->isStraightFlush()) return "Straight Flush - High " .  $this->getHighCard();
+        // if($this->isFourOfAKind()) return "Four of a Kind - High " .  $this->getHighCard();
+        // if($this->isFullHouse()) return "Full House - High " .  $this->getHighCard();
+        // if($this->isFlush()) return "Flush - High " .  $this->getHighCard();
+        // if($this->isStraight()) return "Straight - High " .  $this->getHighCard();
+        // if($this->isThreeOfAKind()) return "Three of a Kind - High " .  $this->getHighCard();
+        // if($this->isTwoPair()) return "Two Pair - High " .  $this->getHighCard();
+        // if($this->isOnePair()) return "One Pair - High " .  $this->getHighCard();
+        return "High Card - High " .  $this->getHighCard();
+    }
+    function isStraightFlush(){
+        
     }
 }
