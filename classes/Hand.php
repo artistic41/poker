@@ -76,17 +76,14 @@ class Hand{
             $diffs .= $values[$i] - $values[$i + 1];
         }
         if(str_contains($diffs, "1111")) {
-            //going back to nominal values, i.e. 'J' instead of 11, 'Q' instead of 12 ... etc.
-            foreach($values as $key => $value){
-                $values[$key] = Deck::$VALUES[$value];
-            }
             return true;
         }
         return false;
     }
     function isStraightFlush(){
         if($this->isStraight() && $this->isFlush()){
-
+            return true;
         }
+        return false;
     }
 }

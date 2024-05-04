@@ -48,8 +48,17 @@ class Table{
     function distributeHand(){
         foreach($this->players as $player){
             //distribute a new hand to each player
-            $card1 = $this->deck->getCard();
-            $card2 = $this->deck->getCard();
+            //FOR DEBUGGING PURPOSES
+            if($player->getId() === 1){
+                $card1 = new Card('H', 6);
+                $card2 = new Card('H', 7);
+                $this->deck->removeCard($card1);
+                $this->deck->removeCard($card2);
+            }
+            else{
+                $card1 = $this->deck->getCard();
+                $card2 = $this->deck->getCard();
+            }
             $hand = new Hand([$card1, $card2]);
             $player->setHand($hand);
         }
@@ -58,8 +67,12 @@ class Table{
         return $this->flop;
     }
     function distributeFlop(){
-        $card1 = $this->deck->getCard();
-        $card2 = $this->deck->getCard();
+        $card1 = new Card('H', 4);
+        $card2 = new Card('H', 5);
+        $this->deck->removeCard($card1);
+        $this->deck->removeCard($card2);
+        // $card1 = $this->deck->getCard();
+        // $card2 = $this->deck->getCard();
         $card3 = $this->deck->getCard();
         $flop = [$card1, $card2, $card3];
         $this->flop = $flop;
