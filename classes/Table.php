@@ -50,8 +50,8 @@ class Table{
             //distribute a new hand to each player
             //FOR DEBUGGING PURPOSES
             if($player->getId() === 1){
-                $card1 = new Card('H', 6);
-                $card2 = new Card('H', 7);
+                $card1 = new Card('S', 6);
+                $card2 = new Card('D', 7);
                 $this->deck->removeCard($card1);
                 $this->deck->removeCard($card2);
             }
@@ -67,7 +67,8 @@ class Table{
         return $this->flop;
     }
     function distributeFlop(){
-        $card1 = new Card('H', 4);
+        //FOR DEBUGGING PURPOSES
+        $card1 = new Card('C', 4);
         $card2 = new Card('H', 5);
         $this->deck->removeCard($card1);
         $this->deck->removeCard($card2);

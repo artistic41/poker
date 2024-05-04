@@ -76,12 +76,13 @@ class Hand{
             $diffs .= $values[$i] - $values[$i + 1];
         }
         if(str_contains($diffs, "1111")) {
+            var_dump('STRAIGHT!!');
             return true;
         }
         return false;
     }
     function isStraightFlush(){
-        if($this->isStraight() && $this->isFlush()){
+        if($this->isFlush() && $this->isStraight()){
             return true;
         }
         return false;
