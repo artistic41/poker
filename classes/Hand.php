@@ -38,7 +38,6 @@ class Hand{
     function evaluate($communityCards){
         $allCards = array_merge($this->cards, $communityCards);
         $this->setCards($allCards);
-        var_dump($this->showHand()); 
         if($this->isStraightFlush()) return "Straight Flush - High " .  $this->getHighCard();
         // if($this->isFourOfAKind()) return "Four of a Kind - High " .  $this->getHighCard();
         // if($this->isFullHouse()) return "Full House - High " .  $this->getHighCard();
