@@ -15,3 +15,7 @@ $table->distributeFlop();
 $table->distributeTurn();
 $table->distributeRiver();
 $table->showDown();
+var_dump($table->getPlayers());
+var_dump($table->getFlop());
+var_dump($table->getTurn());
+var_dump($table->getRiver());

@@ -15,4 +15,7 @@ class Hand{
     function showHand(){
         return [$this->card1->showCard(), $this->card2->showCard()];
     }
+    function evaluate($communityCards){
+        var_dump($communityCards); die();
+    }
 }

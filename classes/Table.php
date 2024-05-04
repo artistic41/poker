@@ -9,7 +9,9 @@ class Table{
 
     private Deck $deck;
     private $players;
-    private $community;
+    private $flop;
+    private $turn;
+    private $river;
     
     function __construct($smallBlind = 1, $bigBlind = 2){
         $this->smallBlind = $smallBlind;
@@ -20,20 +22,20 @@ class Table{
     function getSmallBlind(){
         return $this->smallBlind;
     }
+    function setSmallBlind($smallBlind){
+        $this->smallBlind = $smallBlind;
+    }
     function getBigBlind(){
         return $this->bigBlind;
+    }
+    function setBigBlind($bigBlind){
+        $this->bigBlind = $bigBlind;
     }
     function getPlayers(){
         return $this->players;
     }
     function getNumberOfPlayers(){
         return count($this->players);
-    }
-    function setSmallBlind($smallBlind){
-        $this->smallBlind = $smallBlind;
-    }
-    function setBigBlind($bigBlind){
-        $this->bigBlind = $bigBlind;
     }
     function addPlayer(Player $player){
         $this->players[] = $player;
@@ -43,15 +45,6 @@ class Table{
             if($value->getId() === $player->getId()) unset($this->players[$key]);
         }
     }
-
-    function moveButton(){
-        $this->button ++;
-    }
-
-    function deckIsEmpty(){
-        return $this->deck->isEmpty();
-    }
-
     function distributeHand(){
         foreach($this->players as $player){
             //distribute a new hand to each player
@@ -61,20 +54,43 @@ class Table{
             $player->setHand($hand);
         }
     }
-
+    function getFlop(){
+        return $this->flop;
+    }
     function distributeFlop(){
-
+        $card1 = $this->deck->getCard();
+        $card2 = $this->deck->getCard();
+        $card3 = $this->deck->getCard();
+        $flop = [$card1, $card2, $card3];
+        $this->flop = $flop;
     }
-
+    function getTurn(){
+        return $this->turn;
+    }
     function distributeTurn(){
-        
+        $card = $this->deck->getCard();
+        $this->turn = $card;
     }
-
+    function getRiver(){
+        return $this->river;
+    }
     function distributeRiver(){
-        
+        $card = $this->deck->getCard();
+        $this->river = $card;
     }
-
+    function moveButton(){
+        $this->button ++;
+    }
+    function deckIsEmpty(){
+        return $this->deck->isEmpty();
+    }
     function showDown(){
+        $communityCards = $this->flop;
+        if($this->turn !== NULL) $communityCards[] = $this->turn;
+        if($this->river !== NULL) $communityCards[] = $this->river;
+        foreach($this->players as $player){
+            $strength = $player->getHand()->evaluate($communityCards);
+        }
         $this->moveButton();
     }
 }
