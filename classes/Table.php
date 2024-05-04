@@ -90,6 +90,7 @@ class Table{
         if($this->river !== NULL) $communityCards[] = $this->river;
         foreach($this->players as $player){
             $strength = $player->getHand()->evaluate($communityCards);
+            var_dump($strength);
         }
         $this->moveButton();
     }
