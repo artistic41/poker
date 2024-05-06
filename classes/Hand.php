@@ -44,8 +44,8 @@ class Hand{
         if($this->isFlush()) return "Flush - High " .  $this->getHighCard();
         if($this->isStraight()) return "Straight - High " .  $this->getHighCard();
         if($this->isThreeOfAKind()) return "Three of a Kind - High " .  $this->getHighCard();
-        // if($this->isTwoPair()) return "Two Pair - High " .  $this->getHighCard();
-        // if($this->isOnePair()) return "One Pair - High " .  $this->getHighCard();
+        if($this->isTwoPair()) return $this->isTwoPair() . "- High " .  $this->getHighCard();
+        if($this->isOnePair()) return $this->isOnePair() . "- High " .  $this->getHighCard();
         return "High Card - High " .  $this->getHighCard();
     }
     function isStraightFlush(){
@@ -158,6 +158,38 @@ class Hand{
                 if($card->getValue() !== $winningValue) unset($this->cards[$key]);
             }
             return true;
+        }
+        return false;
+    }
+    function isTwoPair(){
+        $occurences = [];
+        foreach($this->cards as $card){
+            if(isset($occurences[$card->getValue()])) $occurences[$card->getValue()] ++;
+            else $occurences[$card->getValue()] = 1;
+        }
+        if(in_array(2, $occurences)){
+            $winningValues = [];
+            foreach($occurences as $key => $occurence){
+                if($occurence === 2) $winningValues[] = $key;
+            }
+            if(count($winningValues) < 2) return false;
+            sort($winningValues);
+            $description = implode(" and ", $winningValues);
+            return "Two Pair of $description";
+        }
+        return false;
+    }
+    function isOnePair(){
+        $occurences = [];
+        foreach($this->cards as $card){
+            if(isset($occurences[$card->getValue()])) $occurences[$card->getValue()] ++;
+            else $occurences[$card->getValue()] = 1;
+        }
+        if(in_array(2, $occurences)){
+            foreach($occurences as $key => $occurence){
+                if($occurence === 2) $winningValue = $key;
+            }
+            return "One Pair of $winningValue";
         }
         return false;
     }

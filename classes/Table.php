@@ -19,6 +19,17 @@ class Table{
         $this->button = 1;
         $this->deck = new Deck();
     }
+    function showCommunityCards(){
+        $communityCards = $this->flop;
+        if($this->turn !== NULL) $communityCards[] = $this->turn;
+        if($this->river !== NULL) $communityCards[] = $this->river;
+        $json = "{";
+        foreach($communityCards as $card) $json .= "{'suit':'" . $card->getSuit()."','value':'" . $card->getValue() . "'},";
+        //remove the last comma
+        $json = rtrim($json, ",");
+        $json .= "}";
+        return $json;
+    }
     function getSmallBlind(){
         return $this->smallBlind;
     }
@@ -48,17 +59,8 @@ class Table{
     function distributeHand(){
         foreach($this->players as $player){
             //distribute a new hand to each player
-            //FOR DEBUGGING PURPOSES
-            if($player->getId() === 1){
-                $card1 = new Card('S', '10');
-                $card2 = new Card('D', 'K');
-                $this->deck->removeCard($card1);
-                $this->deck->removeCard($card2);
-            }
-            else{
-                $card1 = $this->deck->getCard();
-                $card2 = $this->deck->getCard();
-            }
+            $card1 = $this->deck->getCard();
+            $card2 = $this->deck->getCard();
             $hand = new Hand([$card1, $card2]);
             $player->setHand($hand);
         }
@@ -67,16 +69,9 @@ class Table{
         return $this->flop;
     }
     function distributeFlop(){
-        //FOR DEUBUGGING PURPOSES
-        $card1 = new Card('H', '10');
-        $card2 = new Card('C', '10');
-        $card3 = new Card('H', 'K');
-        $this->deck->removeCard($card1);
-        $this->deck->removeCard($card2);
-        $this->deck->removeCard($card3);
-        // $card1 = $this->deck->getCard();
-        // $card2 = $this->deck->getCard();
-        // $card3 = $this->deck->getCard();
+        $card1 = $this->deck->getCard();
+        $card2 = $this->deck->getCard();
+        $card3 = $this->deck->getCard();
         $flop = [$card1, $card2, $card3];
         $this->flop = $flop;
     }
@@ -104,7 +99,9 @@ class Table{
         $communityCards = $this->flop;
         if($this->turn !== NULL) $communityCards[] = $this->turn;
         if($this->river !== NULL) $communityCards[] = $this->river;
+        echo "Community Cards : " . $this->showCommunityCards() . "\n";
         foreach($this->players as $player){
+            echo "Player " . $player->getId() . ": " . $player->getHand()->showHand() . "\n"; 
             $strength = $player->getHand()->evaluate($communityCards);
             var_dump($player->getHand()->showHand()); 
             var_dump($strength);
