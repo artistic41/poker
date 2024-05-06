@@ -71,11 +71,18 @@ class Hand{
         }
         rsort($values);
         $diffs = "";
+        $straightValues = [];
         for($i = 0; $i < count($values) - 1; $i++){
-            $diffs .= $values[$i] - $values[$i + 1];
+            if($values[$i] - $values[$i + 1] !== 0) {
+                $diffs .= $values[$i] - $values[$i + 1];
+                if(!in_array($values[$i], $straightValues)) $straightValues[] = $values[$i];
+                if(!in_array($values[$i + 1], $straightValues)) $straightValues[] = $values[$i + 1];
+            }
         }
         if(str_contains($diffs, "1111")) {
-            var_dump('STRAIGHT!!');
+            foreach($this->cards as $key => $card){
+                if(!in_array($card->getValue(), $straightValues)) unset($this->cards[$key]);
+            }
             return true;
         }
         return false;

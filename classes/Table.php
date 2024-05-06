@@ -67,13 +67,8 @@ class Table{
         return $this->flop;
     }
     function distributeFlop(){
-        //FOR DEBUGGING PURPOSES
-        $card1 = new Card('C', 4);
-        $card2 = new Card('H', 5);
-        $this->deck->removeCard($card1);
-        $this->deck->removeCard($card2);
-        // $card1 = $this->deck->getCard();
-        // $card2 = $this->deck->getCard();
+        $card1 = $this->deck->getCard();
+        $card2 = $this->deck->getCard();
         $card3 = $this->deck->getCard();
         $flop = [$card1, $card2, $card3];
         $this->flop = $flop;
@@ -103,6 +98,7 @@ class Table{
         if($this->turn !== NULL) $communityCards[] = $this->turn;
         if($this->river !== NULL) $communityCards[] = $this->river;
         foreach($this->players as $player){
+            var_dump($player->getHand()->showHand()); 
             $strength = $player->getHand()->evaluate($communityCards);
             var_dump($player->getHand()->showHand()); 
             var_dump($strength);
