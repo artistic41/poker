@@ -103,8 +103,7 @@ class Table{
         foreach($this->players as $player){
             echo "Player " . $player->getId() . ": " . $player->getHand()->showHand() . "\n"; 
             $strength = $player->getHand()->evaluate($communityCards);
-            var_dump($player->getHand()->showHand()); 
-            var_dump($strength);
+            echo "Player " . $player->getId() . ": " . $strength  . "\n"; 
         }
         $this->moveButton();
     }

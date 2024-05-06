@@ -173,7 +173,7 @@ class Hand{
                 if($occurence === 2) $winningValues[] = $key;
             }
             if(count($winningValues) < 2) return false;
-            sort($winningValues);
+            rsort($winningValues);
             $description = implode(" and ", $winningValues);
             return "Two Pair of $description";
         }
