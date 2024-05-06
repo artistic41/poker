@@ -39,14 +39,60 @@ class Hand{
         $allCards = array_merge($this->cards, $communityCards);
         $this->setCards($allCards);
         if($this->isStraightFlush()) return "Straight Flush - High " .  $this->getHighCard();
-        // if($this->isFourOfAKind()) return "Four of a Kind - High " .  $this->getHighCard();
-        // if($this->isFullHouse()) return "Full House - High " .  $this->getHighCard();
+        if($this->isFourOfAKind()) return "Four of a Kind - High " .  $this->getHighCard();
+        if($this->isFullHouse()) return $this->isFullHouse();
         if($this->isFlush()) return "Flush - High " .  $this->getHighCard();
         if($this->isStraight()) return "Straight - High " .  $this->getHighCard();
-        // if($this->isThreeOfAKind()) return "Three of a Kind - High " .  $this->getHighCard();
+        if($this->isThreeOfAKind()) return "Three of a Kind - High " .  $this->getHighCard();
         // if($this->isTwoPair()) return "Two Pair - High " .  $this->getHighCard();
         // if($this->isOnePair()) return "One Pair - High " .  $this->getHighCard();
         return "High Card - High " .  $this->getHighCard();
+    }
+    function isStraightFlush(){
+        if($this->isFlush() && $this->isStraight()){
+            return true;
+        }
+        return false;
+    }
+    function isFourOfAKind(){
+        $occurences = [];
+        foreach($this->cards as $card){
+            if(isset($occurences[$card->getValue()])) $occurences[$card->getValue()] ++;
+            else $occurences[$card->getValue()] = 1;
+        }
+        if(in_array(4, $occurences)){
+            $winningValue = array_search(4, $occurences);
+            foreach($this->cards as $key => $card){
+                if($card->getValue() !== $winningValue) unset($this->cards[$key]);
+            }
+            return true;
+        }
+        return false;
+    }
+    function isFullHouse(){
+        $occurences = [];
+        foreach($this->cards as $card){
+            if(isset($occurences[$card->getValue()])) $occurences[$card->getValue()] ++;
+            else $occurences[$card->getValue()] = 1;
+        }
+        if(in_array(2, $occurences) && in_array(3, $occurences)){
+            $winningValues = [];
+            foreach($occurences as $key => $occurence){
+                if($occurence === 2) {
+                    $winningValues[] = $key;
+                    $lowCard = $key;
+                }
+                if($occurence === 3) {
+                    $winningValues[] = $key;
+                    $highCard = $key;
+                }
+            }
+            foreach($this->cards as $key => $card){
+                if(!in_array($card->getValue(), $winningValues)) unset($this->cards[$key]);
+            }
+            return "Full House $highCard full of $lowCard";
+        }
+        return false;
     }
     function isFlush(){
         $count = ['C' => 0, 'D' => 0, 'H' => 0, 'S' => 0];
@@ -95,8 +141,22 @@ class Hand{
         }
         return false;
     }
-    function isStraightFlush(){
-        if($this->isFlush() && $this->isStraight()){
+    function isThreeOfAKind(){
+        $occurences = [];
+        foreach($this->cards as $card){
+            if(isset($occurences[$card->getValue()])) $occurences[$card->getValue()] ++;
+            else $occurences[$card->getValue()] = 1;
+        }
+        if(in_array(3, $occurences)){
+            $winningValues = [];
+            foreach($occurences as $key => $occurence){
+                if($occurence === 3) $winningValues[] = $key;
+            }
+            sort($winningValues);
+            $winningValue = end($winningValues);
+            foreach($this->cards as $key => $card){
+                if($card->getValue() !== $winningValue) unset($this->cards[$key]);
+            }
             return true;
         }
         return false;
