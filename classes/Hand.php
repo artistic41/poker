@@ -65,21 +65,29 @@ class Hand{
         return false;
     }
     function isStraight(){
+        if(count($this->cards) < 5) return false;
         $values = [];
         foreach($this->cards as $card){
             $values[] = array_search($card->getValue(), Deck::$VALUES);
         }
+        $values = array_unique($values);
         rsort($values);
-        $diffs = "";
         $straightValues = [];
-        for($i = 0; $i < count($values) - 1; $i++){
-            if($values[$i] - $values[$i + 1] !== 0) {
-                $diffs .= $values[$i] - $values[$i + 1];
-                if(!in_array($values[$i], $straightValues)) $straightValues[] = $values[$i];
-                if(!in_array($values[$i + 1], $straightValues)) $straightValues[] = $values[$i + 1];
+        for($i = 0; $i <= count($values) - 5; $i++){
+            if(
+                $values[$i] - $values[$i + 1] === 1 
+                && $values[$i + 1 ] - $values[$i + 2] === 1 
+                && $values[$i + 2 ] - $values[$i + 3] === 1 
+                && $values[$i + 3 ] - $values[$i + 4] === 1 
+            ) {
+                if(!in_array(Deck::$VALUES[$values[$i]], $straightValues)) $straightValues[] =  Deck::$VALUES[$values[$i]];
+                if(!in_array(Deck::$VALUES[$values[$i + 1]], $straightValues)) $straightValues[] =  Deck::$VALUES[$values[$i + 1]];
+                if(!in_array(Deck::$VALUES[$values[$i + 2]], $straightValues)) $straightValues[] =  Deck::$VALUES[$values[$i + 2]];
+                if(!in_array(Deck::$VALUES[$values[$i + 3]], $straightValues)) $straightValues[] =  Deck::$VALUES[$values[$i + 3]];
+                if(!in_array(Deck::$VALUES[$values[$i + 4]], $straightValues)) $straightValues[] =  Deck::$VALUES[$values[$i + 4]];
             }
         }
-        if(str_contains($diffs, "1111")) {
+        if(count($straightValues) >= 5) {
             foreach($this->cards as $key => $card){
                 if(!in_array($card->getValue(), $straightValues)) unset($this->cards[$key]);
             }

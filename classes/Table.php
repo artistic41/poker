@@ -98,7 +98,6 @@ class Table{
         if($this->turn !== NULL) $communityCards[] = $this->turn;
         if($this->river !== NULL) $communityCards[] = $this->river;
         foreach($this->players as $player){
-            var_dump($player->getHand()->showHand()); 
             $strength = $player->getHand()->evaluate($communityCards);
             var_dump($player->getHand()->showHand()); 
             var_dump($strength);
