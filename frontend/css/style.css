@@ -1,0 +1,8 @@
+.table{
+    /* https://coolors.co/contrast-checker/ffffff-12569b */
+    background-color: #12569B;
+    color: #fff;
+    border-style: solid;
+    height:10px; 
+    width:75%
+}
